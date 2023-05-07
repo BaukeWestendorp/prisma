@@ -1,24 +1,56 @@
-use crate::effect::{hydrate_effect, EffectWrapper};
+use crate::color::Color;
+use crate::effect::{hydrate_effect, Effect, EffectWrapper, LedRange};
 use crate::runner::Runner;
 
 #[derive(Debug, Clone)]
 pub struct Project {
     pub framerate: usize,
     pub global_bpm: f32,
-    pub cues: Vec<Cue>,
+    pub effects: Vec<EffectWrapper>,
 }
 
 impl Project {
-    pub fn hydrate(&self, runner: &mut Runner) {
-        for cue in self.cues.iter() {
-            cue.hydrate(runner);
+    pub fn hydrate(&mut self, runner: &mut Runner) {
+        let base_effects = vec![EffectWrapper {
+            bpm_factor: 1.0,
+            range: LedRange {
+                min: 0,
+                max: runner.project.led_count(),
+            },
+            effect: Effect::StaticColor {
+                color: Color::black(),
+            },
+        }];
+
+        let mut effect_wrappers = base_effects;
+        effect_wrappers.append(&mut self.effects);
+
+        for effect_wrapper in effect_wrappers.iter() {
+            let cycle_context = CycleContext::new(runner, effect_wrapper);
+
+            let mut effect_leds = Vec::new();
+            runner.leds[effect_wrapper.range.min..effect_wrapper.range.max]
+                .clone_into(&mut effect_leds);
+            hydrate_effect(&effect_wrapper.effect, cycle_context, &mut effect_leds);
+
+            for (i, color) in runner.leds[effect_wrapper.range.min..effect_wrapper.range.max]
+                .iter_mut()
+                .enumerate()
+            {
+                color.blend_with(&effect_leds[i]);
+            }
         }
     }
-}
 
-#[derive(Debug, Clone)]
-pub struct Cue {
-    pub effects: Vec<EffectWrapper>,
+    pub fn led_count(&self) -> usize {
+        let mut max = 0;
+        for effect in self.effects.iter() {
+            if max < effect.range.max {
+                max = effect.range.max
+            }
+        }
+        max
+    }
 }
 
 #[derive(Debug, Clone)]
@@ -42,22 +74,6 @@ impl CycleContext {
             frame: runner.frame,
             measure_progress: measure_progress as f32,
             is_first_frame_of_measure,
-        }
-    }
-}
-
-impl Cue {
-    pub(crate) fn hydrate(&self, runner: &mut Runner) {
-        for effect_wrapper in self.effects.iter() {
-            let cycle_context = CycleContext::new(runner, effect_wrapper);
-
-            let mut effect_leds = Vec::new();
-            runner.leds.clone_into(&mut effect_leds);
-            hydrate_effect(&effect_wrapper.effect, cycle_context, &mut effect_leds);
-
-            for (i, color) in runner.leds.iter_mut().enumerate() {
-                color.blend_with(&effect_leds[i]);
-            }
         }
     }
 }

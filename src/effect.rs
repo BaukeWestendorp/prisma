@@ -23,10 +23,23 @@ pub enum Effect {
     },
 }
 
+#[derive(Debug, Clone, Copy)]
+pub struct LedRange {
+    pub min: usize,
+    pub max: usize,
+}
+
+impl LedRange {
+    pub fn count(&self) -> usize {
+        self.max - self.min
+    }
+}
+
 // FIXME: Find better name for this struct
 #[derive(Debug, Clone)]
 pub struct EffectWrapper {
     pub bpm_factor: f32,
+    pub range: LedRange,
     pub effect: Effect,
 }
 
