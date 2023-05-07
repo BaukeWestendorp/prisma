@@ -391,6 +391,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "common"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "console_error_panic_hook"
 version = "0.1.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2370,6 +2378,7 @@ dependencies = [
 name = "prisma"
 version = "0.0.0"
 dependencies = [
+ "common",
  "rand 0.8.5",
  "serde",
  "serde_json",
