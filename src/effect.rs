@@ -4,7 +4,7 @@ use crate::project::CycleContext;
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum WaveType {
     Sine,
-    Square(f32),
+    Square { pulse_width: f32 },
 }
 
 #[derive(Debug, Clone)]
@@ -60,7 +60,7 @@ pub fn hydrate_effect(effect: &Effect, cycle_context: CycleContext, leds: &mut [
                 let t = cycle_context.measure_progress + i as f32 / led_count as f32;
                 let mut factor = ((t * std::f32::consts::PI * 2.0 * *repeats).cos() + 1.0) / 2.0;
 
-                if let WaveType::Square(pulse_width) = *wave_type {
+                if let WaveType::Square { pulse_width } = *wave_type {
                     factor = match factor >= pulse_width {
                         true => 1.0,
                         false => 0.0,
