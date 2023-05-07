@@ -35,7 +35,7 @@ fn main() {
         }],
     };
 
-    let runner = Arc::new(Mutex::new(Runner::new(project)));
+    let runner = Arc::new(Mutex::new(Runner::new(project, "localhost:7200")));
 
     std::thread::spawn({
         let runner = runner.clone();

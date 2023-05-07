@@ -14,8 +14,8 @@ pub struct Runner {
 }
 
 impl Runner {
-    pub fn new(project: Project) -> Self {
-        let stream = TcpStream::connect("localhost:7200").unwrap();
+    pub fn new(project: Project, address: &str) -> Self {
+        let stream = TcpStream::connect(address).unwrap();
         let leds = vec![Color::black(); 64];
 
         Self {
