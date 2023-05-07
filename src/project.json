@@ -1,0 +1,59 @@
+{
+    "framerate": 50,
+    "global_bpm": 60.0,
+    "effects": [
+        {
+            "bpm_factor": 1.0,
+            "range": {
+                "min": 0,
+                "max": 50
+            },
+            "effect": {
+                "type": "StaticColor",
+                "color": [1, 0, 0, 1]
+            }
+        },
+        {
+            "bpm_factor": 1.0,
+            "range": {
+                "min": 40,
+                "max": 60
+            },
+            "effect": {
+                "type": "StaticColor",
+                "color": [0, 1, 1, 0.5]
+            }
+        },
+        {
+            "bpm_factor": 1.0,
+            "range": {
+                "min": 40,
+                "max": 60
+            },
+            "effect": {
+                "type": "Wave",
+                "color": [0, 1, 0, 1],
+                "wave_type": {
+                    "type": "Sine"
+                },
+                "repeats": 1.0
+            }
+        },
+        {
+            "bpm_factor": 1.0,
+            "range": {
+                "min": 5,
+                "max": 25
+            },
+            "effect": {
+                "type": "Wave",
+                "color": [0, 0, 1, 1],
+                "wave_type": {
+                    "type": "Square",
+                    "pulse_width": 0.5
+                },
+                "repeats": 1.0
+            }
+        }
+    ]   
+}

@@ -12,44 +12,7 @@ mod project;
 mod runner;
 
 fn main() {
-    let project = Project {
-        framerate: 50,
-        global_bpm: 60.0,
-        effects: vec![
-            EffectWrapper {
-                bpm_factor: 1.0,
-                range: LedRange { min: 0, max: 50 },
-                effect: Effect::StaticColor {
-                    color: Color::red(),
-                },
-            },
-            EffectWrapper {
-                bpm_factor: 1.0,
-                range: LedRange { min: 40, max: 60 },
-                effect: Effect::StaticColor {
-                    color: Color::rgb(0.0, 1.0, 1.0, 0.5),
-                },
-            },
-            EffectWrapper {
-                bpm_factor: 1.0,
-                range: LedRange { min: 40, max: 60 },
-                effect: Effect::Wave {
-                    color: Color::green(),
-                    wave_type: effect::WaveType::Sine,
-                    repeats: 1.0,
-                },
-            },
-            EffectWrapper {
-                bpm_factor: 1.0,
-                range: LedRange { min: 5, max: 25 },
-                effect: Effect::Wave {
-                    color: Color::blue(),
-                    wave_type: effect::WaveType::Square { pulse_width: 0.5 },
-                    repeats: 0.5,
-                },
-            },
-        ],
-    };
+    let project: Project = serde_json::from_str(include_str!("project.json")).unwrap();
 
     let runner = Arc::new(Mutex::new(Runner::new(project, "localhost:7200")));
 

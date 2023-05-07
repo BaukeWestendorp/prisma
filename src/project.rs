@@ -2,7 +2,7 @@ use crate::color::Color;
 use crate::effect::{hydrate_effect, Effect, EffectWrapper, LedRange};
 use crate::runner::Runner;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, serde::Deserialize)]
 pub struct Project {
     pub framerate: usize,
     pub global_bpm: f32,
