@@ -1,10 +1,10 @@
 [package]
 name = "prisma"
 version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
+description = "An editor for creating zeevonk effects"
+authors = ["Bauke Westendorp"]
+license = "MIT"
+repository = "https://github.com/BaukeWestendorp/prisma"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
