@@ -1,110 +1,110 @@
 {
-    "framerate": 50,
-    "global_bpm": 30.0,
-    "effects": [
-        {
-            "bpm_factor": 1.0,
-            "range": {
-                "min": 0,
-                "max": 40
-            },
-            "effect": {
-                "type": "StaticColor",
-                "color": [1, 0.10, 0, 1]
-            }
-        },
-        {
-            "bpm_factor": 1.0,
-            "range": {
-                "min": 0,
-                "max": 40
-            },
-            "effect": {
-                "type": "Wave",
-                "color": [1.0, 0.20, 0, 1],
-                "wave_type": {
-                    "type": "Sine"
-                },
-                "repeats": 1.0
-            }
-        },
-        {
-            "bpm_factor": 1.0,
-            "range": {
-                "min": 40,
-                "max": 80
-            },
-            "effect": {
-                "type": "StaticColor",
-                "color": [0, 0.40, 1.0, 1]
-            }
-        },
-        {
-            "bpm_factor": 1.0,
-            "range": {
-                "min": 40,
-                "max": 80
-            },
-            "effect": {
-                "type": "Wave",
-                "color": [0.0, 0.70, 1.0, 1],
-                "wave_type": {
-                    "type": "Sine"
-                },
-                "repeats": 1.0
-            }
-        },
-        {
-            "bpm_factor": 1.0,
-            "range": {
-                "min": 80,
-                "max": 144
-            },
-            "effect": {
-                "type": "StaticColor",
-                "color": [1, 0.10, 0, 1]
-            }
-        },
-        {
-            "bpm_factor": 1.0,
-            "range": {
-                "min": 80,
-                "max": 144
-            },
-            "effect": {
-                "type": "Wave",
-                "color": [1.0, 0.20, 0, 1],
-                "wave_type": {
-                    "type": "Sine"
-                },
-                "repeats": 1.0
-            }
-        },
-        {
-            "bpm_factor": 1.0,
-            "range": {
-                "min": 144,
-                "max": 208
-            },
-            "effect": {
-                "type": "StaticColor",
-                "color": [0, 0.40, 1.0, 1]
-            }
-        },
-        {
-            "bpm_factor": 1.0,
-            "range": {
-                "min": 144,
-                "max": 208
-            },
-            "effect": {
-                "type": "Wave",
-                "color": [0.0, 0.70, 1.0, 1],
-                "wave_type": {
-                    "type": "Sine"
-                },
-                "repeats": 1.0
-            }
-        }
-    ]   
+	"framerate": 50,
+	"global_bpm": 30.0,
+	"effects": [
+		{
+			"bpm_factor": 1.0,
+			"range": {
+				"min": 0,
+				"max": 40
+			},
+			"effect": {
+				"type": "StaticColor",
+				"color": [1, 0.1, 0, 1]
+			}
+		},
+		{
+			"bpm_factor": 1.0,
+			"range": {
+				"min": 0,
+				"max": 40
+			},
+			"effect": {
+				"type": "Wave",
+				"color": [1.0, 0.2, 0, 1],
+				"wave_type": {
+					"type": "Sine"
+				},
+				"repeats": 1.0
+			}
+		},
+		{
+			"bpm_factor": 1.0,
+			"range": {
+				"min": 40,
+				"max": 80
+			},
+			"effect": {
+				"type": "StaticColor",
+				"color": [0, 0.4, 1.0, 1]
+			}
+		},
+		{
+			"bpm_factor": 1.0,
+			"range": {
+				"min": 40,
+				"max": 80
+			},
+			"effect": {
+				"type": "Wave",
+				"color": [0.0, 0.7, 1.0, 1],
+				"wave_type": {
+					"type": "Sine"
+				},
+				"repeats": 1.0
+			}
+		},
+		{
+			"bpm_factor": 1.0,
+			"range": {
+				"min": 80,
+				"max": 144
+			},
+			"effect": {
+				"type": "StaticColor",
+				"color": [1, 0.1, 0, 1]
+			}
+		},
+		{
+			"bpm_factor": 1.0,
+			"range": {
+				"min": 80,
+				"max": 144
+			},
+			"effect": {
+				"type": "Wave",
+				"color": [1.0, 0.2, 0, 1],
+				"wave_type": {
+					"type": "Sine"
+				},
+				"repeats": 1.0
+			}
+		},
+		{
+			"bpm_factor": 1.0,
+			"range": {
+				"min": 144,
+				"max": 208
+			},
+			"effect": {
+				"type": "StaticColor",
+				"color": [0, 0.4, 1.0, 1]
+			}
+		},
+		{
+			"bpm_factor": 1.0,
+			"range": {
+				"min": 144,
+				"max": 208
+			},
+			"effect": {
+				"type": "Wave",
+				"color": [0.0, 0.7, 1.0, 1],
+				"wave_type": {
+					"type": "Sine"
+				},
+				"repeats": 1.0
+			}
+		}
+	]
 }
