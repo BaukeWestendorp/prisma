@@ -1,7 +1,7 @@
 mod components;
 mod editor;
 mod invokations;
-mod project_state;
+mod state;
 
 use components::app::App;
 

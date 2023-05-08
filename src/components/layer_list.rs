@@ -2,57 +2,70 @@ use yew::prelude::*;
 
 use crate::editor::editor_project::Layer;
 use crate::invokations;
-use crate::project_state::{ProjectAction, ProjectState};
+use crate::state::project::{ProjectAction, ProjectContext};
+use crate::state::ui::{UiAction, UiStateContext};
 
 #[function_component]
 pub fn LayerList() -> Html {
-    let project = use_reducer(ProjectState::default);
+    let project_ctx = use_context::<ProjectContext>().expect("no project context found");
+    let ui_state_ctx = use_context::<UiStateContext>().expect("no ui state context found");
 
     let add_layer = {
-        let project = project.clone();
+        let project_ctx = project_ctx.clone();
         Callback::from(move |_| {
             let layer = Layer::new(
-                format!("New Layer {}", project.project.layers.len()).as_str(),
+                format!("New Layer {}", project_ctx.editor_project.layers.len()).as_str(),
                 true,
             );
-            project.dispatch(ProjectAction::Add(layer))
+            project_ctx.dispatch(ProjectAction::Add(layer))
         })
     };
 
     let remove_layer = |index| {
-        let project = project.clone();
-        Callback::from(move |_| project.dispatch(ProjectAction::Remove(index)))
+        let project_ctx = project_ctx.clone();
+        Callback::from(move |_| project_ctx.dispatch(ProjectAction::Remove(index)))
     };
 
     let toggle_layer_visibility = |index| {
-        let project = project.clone();
-        let visible = match project.project.layers.get(index) {
+        let project_ctx = project_ctx.clone();
+        let visible = match project_ctx.editor_project.layers.get(index) {
             Some(layer) => !(layer as &Layer).visible,
             None => false,
         };
-        Callback::from(move |_| project.dispatch(ProjectAction::SetLayerVisibility(index, visible)))
+        Callback::from(move |_| {
+            project_ctx.dispatch(ProjectAction::SetLayerVisibility(index, visible))
+        })
+    };
+
+    let select_layer = |index: usize| {
+        let ui_state_ctx = ui_state_ctx.clone();
+        Callback::from(move |_| ui_state_ctx.dispatch(UiAction::SelectLayer(Some(index))))
     };
 
     use_effect_with_deps(
         {
-            let project = project.clone();
+            let project_ctx = project_ctx.clone();
             move |_| {
-                invokations::update_project(project.project.clone());
+                invokations::update_project(project_ctx.editor_project.clone());
             }
         },
-        project.clone(),
+        project_ctx.clone(),
     );
 
     html! {
         <div class="layer-list">
             {
-                project.project.layers.iter().enumerate().map(|(index, layer)| {
+                project_ctx.editor_project.layers.iter().enumerate().map(|(index, layer)| {
                     html! {
-                        <div class="layer">
+                        <div class="layer" onclick={select_layer(index)}>
                             <h3>{layer.clone().name}</h3>
                             <label>
                                 {"Visible"}
-                                <input type="checkbox" checked={layer.visible} onchange={toggle_layer_visibility(index)} />
+                                <input
+                                    type="checkbox"
+                                    checked={layer.visible}
+                                    onchange={toggle_layer_visibility(index)}
+                                />
                             </label>
                             <button onclick={remove_layer(index)}>{"Remove"}</button>
                         </div>
