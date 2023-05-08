@@ -1,6 +1,7 @@
 use yew::prelude::*;
 
 use crate::components::layer_list::LayerList;
+use crate::components::main_content::MainContent;
 use crate::state::project::{ProjectContext, ProjectState};
 use crate::state::ui::{UiState, UiStateContext};
 
@@ -13,12 +14,7 @@ pub fn App() -> Html {
             <ContextProvider<ProjectContext> context={project}>
                 <main>
                     <LayerList />
-                    <div class="content">{
-                        match ui_state.selected_layer {
-                            Some(index) => format!("{index}"),
-                            None => format!("None"),
-                        }
-                    }</div>
+                    <MainContent />
                 </main>
             </ContextProvider<ProjectContext>>
         </ContextProvider<UiStateContext>>

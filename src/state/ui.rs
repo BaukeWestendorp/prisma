@@ -1,4 +1,4 @@
-use yew::{Reducible, UseReducerHandle};
+use yew::prelude::*;
 
 pub type UiStateContext = UseReducerHandle<UiState>;
 

@@ -1,2 +1,3 @@
-pub(crate) mod app;
-pub(crate) mod layer_list;
+pub mod app;
+pub mod layer_list;
+pub mod main_content;
