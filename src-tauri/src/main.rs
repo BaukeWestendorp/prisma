@@ -6,18 +6,39 @@ use std::sync::{Arc, Mutex};
 use common::project::Project;
 use common::runner::Runner;
 
+#[derive(Debug)]
+struct RunnerState {
+    runner: Arc<Mutex<Runner>>,
+}
+
+#[tauri::command]
+fn update_project(new_project: Project, project_state: tauri::State<'_, RunnerState>) {
+    project_state
+        .runner
+        .lock()
+        .unwrap()
+        .update_project(new_project.clone());
+}
+
 fn main() {
-    std::thread::spawn(move || {
-        let project: Project =
-            serde_json::from_str(include_str!("project.json")).expect("failed to get project.json");
-        let runner = Arc::new(Mutex::new(Runner::new(project, "localhost:7200")));
-        loop {
+    let initial_project = Project {
+        framerate: 50,
+        global_bpm: 60.0,
+        effect_layers: vec![],
+    };
+    let runner = Arc::new(Mutex::new(Runner::new(initial_project, "localhost:7200")));
+
+    std::thread::spawn({
+        let runner = runner.clone();
+        move || loop {
             runner.lock().unwrap().proceed();
             std::thread::yield_now();
         }
     });
 
     tauri::Builder::default()
+        .manage(RunnerState { runner })
+        .invoke_handler(tauri::generate_handler![update_project])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

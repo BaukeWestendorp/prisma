@@ -5,6 +5,7 @@ use std::time::{Duration, Instant};
 use crate::color::Color;
 use crate::project::Project;
 
+#[derive(Debug)]
 pub struct Runner {
     pub project: Project,
     pub stream: TcpStream,
@@ -43,18 +44,27 @@ impl Runner {
         self.project = project;
     }
 
+    pub fn clear_leds(&mut self) {
+        self.leds = vec![Color::black(); self.project.led_count()];
+    }
+
     fn send_to_zeevonk(&mut self) {
         let led_count = self.project.led_count();
+        if led_count == 0 {
+            return;
+        }
         if led_count > u16::MAX as usize {
             panic!("Led count exceeded maximum value of {}", u16::MAX);
         }
 
-        let led_count_bytes = u16::to_be_bytes(led_count as u16);
         let mut color_bytes = Vec::new();
         for color in self.leds.iter() {
             color_bytes.append(&mut color.as_bytes().to_vec());
         }
+
+        let led_count_bytes = u16::to_be_bytes(led_count as u16);
         let mut bytes = led_count_bytes.to_vec();
+
         bytes.append(&mut color_bytes);
 
         self.stream.write_all(bytes.as_slice()).unwrap();

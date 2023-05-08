@@ -2,15 +2,27 @@ use crate::color::Color;
 use crate::effect::{hydrate_effect, Effect, EffectLayer, LedRange};
 use crate::runner::Runner;
 
-#[derive(Debug, Clone, serde::Deserialize)]
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
 pub struct Project {
     pub framerate: usize,
     pub global_bpm: f32,
-    pub effects: Vec<EffectLayer>,
+    pub effect_layers: Vec<EffectLayer>,
+}
+
+impl Default for Project {
+    fn default() -> Self {
+        Self {
+            framerate: 50,
+            global_bpm: 60.0,
+            effect_layers: vec![],
+        }
+    }
 }
 
 impl Project {
     pub fn hydrate(&mut self, runner: &mut Runner) {
+        runner.clear_leds();
+
         let base_effects = vec![EffectLayer {
             bpm_factor: 1.0,
             range: LedRange {
@@ -23,7 +35,7 @@ impl Project {
         }];
 
         let mut layers = base_effects;
-        layers.append(&mut self.effects);
+        layers.append(&mut self.effect_layers);
 
         for layer in layers.iter() {
             let cycle_context = CycleContext::new(runner, layer);
@@ -43,7 +55,7 @@ impl Project {
 
     pub fn led_count(&self) -> usize {
         let mut max = 0;
-        for effect in self.effects.iter() {
+        for effect in self.effect_layers.iter() {
             if max < effect.range.max {
                 max = effect.range.max
             }

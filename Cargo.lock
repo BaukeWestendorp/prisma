@@ -2391,6 +2391,8 @@ dependencies = [
 name = "prisma-ui"
 version = "0.0.0"
 dependencies = [
+ "common",
+ "gloo-console",
  "js-sys",
  "serde",
  "serde-wasm-bindgen",
