@@ -24,6 +24,15 @@ pub fn LayerList() -> Html {
         Callback::from(move |_| project.dispatch(ProjectAction::Remove(index)))
     };
 
+    let toggle_layer_visibility = |index| {
+        let project = project.clone();
+        let visible = match project.project.layers.get(index) {
+            Some(layer) => !(layer as &Layer).visible,
+            None => false,
+        };
+        Callback::from(move |_| project.dispatch(ProjectAction::SetLayerVisibility(index, visible)))
+    };
+
     use_effect_with_deps(
         {
             let project = project.clone();
@@ -37,13 +46,13 @@ pub fn LayerList() -> Html {
     html! {
         <div class="layer-list">
             {
-                project.project.layers.iter().cloned().enumerate().map(|(index, layer)| {
+                project.project.layers.iter().enumerate().map(|(index, layer)| {
                     html! {
                         <div class="layer">
-                            <h3>{layer.name}</h3>
+                            <h3>{layer.clone().name}</h3>
                             <label>
                                 {"Visible"}
-                                <input type="checkbox" checked={layer.visible} />
+                                <input type="checkbox" checked={layer.visible} onchange={toggle_layer_visibility(index)} />
                             </label>
                             <button onclick={remove_layer(index)}>{"Remove"}</button>
                         </div>

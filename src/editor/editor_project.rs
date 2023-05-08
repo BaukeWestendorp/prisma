@@ -27,7 +27,10 @@ impl From<EditorProject> for Project {
             effect_layers: editor_project
                 .layers
                 .into_iter()
-                .map(|layer| layer.effect_layer)
+                .filter_map(|layer| match layer.visible {
+                    true => Some(layer.effect_layer),
+                    false => None,
+                })
                 .collect::<Vec<_>>(),
         }
     }

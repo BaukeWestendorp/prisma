@@ -23,7 +23,6 @@ pub(crate) fn update_project(editor_project: EditorProject) {
             newProject: editor_project.into(),
         })
         .unwrap();
-        gloo_console::log!(js_value.clone());
         invoke("update_project", js_value).await;
     });
 }

@@ -7,6 +7,7 @@ use crate::editor::editor_project::{EditorProject, Layer};
 pub(crate) enum ProjectAction {
     Add(Layer),
     Remove(usize),
+    SetLayerVisibility(usize, bool),
 }
 
 #[derive(Debug, Default, Clone, PartialEq)]
@@ -27,6 +28,13 @@ impl Reducible for ProjectState {
             ProjectAction::Remove(index) => {
                 let mut layers = self.project.layers.to_vec();
                 layers.remove(index);
+                layers
+            }
+            ProjectAction::SetLayerVisibility(index, visible) => {
+                let mut layers = self.project.layers.to_vec();
+                if let Some(layer) = layers.get_mut(index) {
+                    layer.visible = visible
+                };
                 layers
             }
         };
