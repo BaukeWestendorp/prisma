@@ -76,8 +76,14 @@ pub fn LayerList() -> Html {
         <div class="layer-list">
             {
                 project_ctx.editor_project.layers.iter().enumerate().map(|(index, layer)| {
+                    let is_selected = ui_state_ctx.selected_layer == Some(index);
+                    let selected_class = match is_selected {
+                        true => Some("selected"),
+                        false => None,
+                    };
+
                     html! {
-                        <div class="layer" onclick={select_layer(index)}>
+                        <div class={classes!("layer", selected_class)} onclick={select_layer(index)}>
                             <h3>{layer.clone().name}</h3>
                             <label>
                                 {"Visible"}

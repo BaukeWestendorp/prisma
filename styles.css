@@ -19,6 +19,7 @@
 	--c-warning: var(--c-orange);
 
 	--c-accent: var(--c-teal);
+	--c-accent-hover: #20a8ba;
 	--c-primary: black;
 	--c-secondary: var(--c-gray-6);
 	--c-background: white;
@@ -52,4 +53,17 @@ main {
 .layer-list .layer {
 	border: 1px solid var(--c-gray-3);
 	padding: 0.75rem;
+	cursor: pointer;
+}
+
+.layer-list .layer:hover {
+	background: var(--c-gray-2);
+}
+
+.layer-list .layer.selected {
+	background: var(--c-accent);
+}
+
+.layer-list .layer.selected:hover {
+	background: var(--c-accent-hover);
 }
