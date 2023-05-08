@@ -52,6 +52,26 @@ pub fn LayerList() -> Html {
         project_ctx.clone(),
     );
 
+    use_effect_with_deps(
+        {
+            let project_ctx = project_ctx.clone();
+            let ui_state_ctx = ui_state_ctx.clone();
+            move |_| {
+                if let Some(selected_layer) = ui_state_ctx.selected_layer {
+                    if project_ctx
+                        .editor_project
+                        .layers
+                        .get(selected_layer)
+                        .is_none()
+                    {
+                        ui_state_ctx.dispatch(UiAction::SelectLayer(None))
+                    }
+                }
+            }
+        },
+        project_ctx.editor_project.layers.clone(),
+    );
+
     html! {
         <div class="layer-list">
             {
