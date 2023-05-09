@@ -1,5 +1,6 @@
 use yew::prelude::*;
 
+use crate::components::effect_editor::EffectEditor;
 use crate::state::project::ProjectContext;
 use crate::state::ui::UiStateContext;
 
@@ -11,7 +12,7 @@ pub fn MainContent() -> Html {
     match ui_state_ctx.selected_layer {
         Some(selected_layer) => match project_ctx.editor_project.layers.get(selected_layer) {
             Some(layer) => html! {
-                <p>{layer.clone().name}</p>
+                <EffectEditor layer_id={layer.id} />
             },
             None => html! {
                 <p>{"Layer not found!"}</p>

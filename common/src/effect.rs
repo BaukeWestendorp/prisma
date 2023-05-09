@@ -31,12 +31,21 @@ pub struct LedRange {
     pub max: usize,
 }
 
-// FIXME: Find better name for this struct
 #[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
 pub struct EffectLayer {
     pub bpm_factor: f32,
     pub range: LedRange,
     pub effect: Effect,
+}
+
+impl EffectLayer {
+    pub fn new(bpm_factor: f32, range: LedRange, effect: Effect) -> Self {
+        Self {
+            bpm_factor,
+            range,
+            effect,
+        }
+    }
 }
 
 pub(crate) fn hydrate_effect(effect: &Effect, cycle_context: CycleContext, leds: &mut [Color]) {

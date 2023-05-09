@@ -23,16 +23,16 @@ impl Project {
     pub fn hydrate(&mut self, runner: &mut Runner) {
         runner.clear_leds();
 
-        let base_effects = vec![EffectLayer {
-            bpm_factor: 1.0,
-            range: LedRange {
+        let base_effects = vec![EffectLayer::new(
+            1.0,
+            LedRange {
                 min: 0,
                 max: runner.project.led_count(),
             },
-            effect: Effect::StaticColor {
+            Effect::StaticColor {
                 color: Color::black(),
             },
-        }];
+        )];
 
         let mut layers = base_effects;
         layers.append(&mut self.effect_layers);
