@@ -1,24 +1,25 @@
-use yew::prelude::*;
+use std::rc::Rc;
 
-pub type UiStateContext = UseReducerHandle<UiState>;
+use yewdux::prelude::*;
+
+use super::editor_project::LayerId;
+
+#[derive(Clone, Debug, Default, PartialEq, Store)]
+pub struct UiState {
+    pub selected_layer: Option<LayerId>,
+}
 
 pub enum UiAction {
-    SelectLayer(Option<usize>),
+    SelectLayer(Option<LayerId>),
 }
 
-#[derive(Clone, Debug, Default, PartialEq)]
-pub struct UiState {
-    pub selected_layer: Option<usize>,
-}
+impl Reducer<UiState> for UiAction {
+    fn apply(self, mut ui_state: Rc<UiState>) -> Rc<UiState> {
+        let state = Rc::make_mut(&mut ui_state);
+        match self {
+            UiAction::SelectLayer(id) => state.selected_layer = id,
+        }
 
-impl Reducible for UiState {
-    type Action = UiAction;
-
-    fn reduce(self: std::rc::Rc<Self>, action: Self::Action) -> std::rc::Rc<Self> {
-        let selected_layer = match action {
-            UiAction::SelectLayer(index) => index,
-        };
-
-        Self { selected_layer }.into()
+        ui_state
     }
 }

@@ -1,8 +1,10 @@
+use serde::{Deserialize, Serialize};
+
 use crate::color::Color;
 use crate::effect::{hydrate_effect, Effect, EffectLayer, LedRange};
 use crate::runner::Runner;
 
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Project {
     pub framerate: usize,
     pub global_bpm: f32,

@@ -1,99 +1,68 @@
 use yew::prelude::*;
+use yewdux::prelude::use_store;
 
-use crate::editor::editor_project::Layer;
-use crate::invokations;
-use crate::state::project::{ProjectAction, ProjectContext};
-use crate::state::ui::{UiAction, UiStateContext};
+use crate::state::editor_project::{EditorProject, ProjectAction};
+use crate::state::ui::{UiAction, UiState};
 
 #[function_component]
 pub fn LayerList() -> Html {
-    let project_ctx = use_context::<ProjectContext>().expect("no project context found");
-    let ui_state_ctx = use_context::<UiStateContext>().expect("no ui state context found");
+    let (project, dispatch_project) = use_store::<EditorProject>();
+    let (ui_state, dispatch_ui_state) = use_store::<UiState>();
 
-    let add_layer = {
-        let project_ctx = project_ctx.clone();
-        Callback::from(move |_| {
-            let layer = Layer::new(
-                format!("New Layer {}", project_ctx.editor_project.layers.len()).as_str(),
-                true,
-            );
-            project_ctx.dispatch(ProjectAction::Add(layer))
+    let add_layer = dispatch_project.apply_callback(move |_| ProjectAction::AddDefaultLayer());
+
+    let remove_layer = |id| {
+        dispatch_project.apply_callback(move |event: MouseEvent| {
+            event.stop_propagation();
+            ProjectAction::RemoveLayer(id)
         })
     };
 
-    let remove_layer = |index| {
-        let project_ctx = project_ctx.clone();
-        Callback::from(move |_| project_ctx.dispatch(ProjectAction::Remove(index)))
-    };
+    let toggle_layer_visibility =
+        |id| dispatch_project.apply_callback(move |_| ProjectAction::ToggleLayerVisibility(id));
 
-    let toggle_layer_visibility = |index| {
-        let project_ctx = project_ctx.clone();
-        let visible = match project_ctx.editor_project.layers.get(index) {
-            Some(layer) => !(layer as &Layer).visible,
-            None => false,
-        };
-        Callback::from(move |_| {
-            project_ctx.dispatch(ProjectAction::SetLayerVisibility(index, visible))
-        })
-    };
-
-    let select_layer = |index: usize| {
-        let ui_state_ctx = ui_state_ctx.clone();
-        Callback::from(move |_| ui_state_ctx.dispatch(UiAction::SelectLayer(Some(index))))
-    };
+    let select_layer =
+        |id| dispatch_ui_state.apply_callback(move |_| UiAction::SelectLayer(Some(id)));
 
     use_effect_with_deps(
         {
-            let project_ctx = project_ctx.clone();
+            let dispatch_ui_state = dispatch_ui_state.clone();
+            let project = project.clone();
+            let ui_state = ui_state.clone();
             move |_| {
-                invokations::update_project(project_ctx.editor_project.clone());
-            }
-        },
-        project_ctx.clone(),
-    );
-
-    use_effect_with_deps(
-        {
-            let project_ctx = project_ctx.clone();
-            let ui_state_ctx = ui_state_ctx.clone();
-            move |_| {
-                if let Some(selected_layer) = ui_state_ctx.selected_layer {
-                    if project_ctx
-                        .editor_project
-                        .layers
-                        .get(selected_layer)
-                        .is_none()
-                    {
-                        ui_state_ctx.dispatch(UiAction::SelectLayer(None))
+                if let Some(selected_layer) = ui_state.selected_layer {
+                    if project.get_layer_from_id(selected_layer).is_none() {
+                        dispatch_ui_state.apply(UiAction::SelectLayer(None))
                     }
                 }
             }
         },
-        project_ctx.editor_project.layers.clone(),
+        project.layers.clone(),
     );
 
     html! {
         <div class="layer-list">
             {
-                project_ctx.editor_project.layers.iter().enumerate().map(|(index, layer)| {
-                    let is_selected = ui_state_ctx.selected_layer == Some(index);
+                project.layers.iter().map(move |layer| {
+                    let is_selected = ui_state.selected_layer == Some(layer.id);
                     let selected_class = match is_selected {
                         true => Some("selected"),
                         false => None,
                     };
 
                     html! {
-                        <div class={classes!("layer", selected_class)} onclick={select_layer(index)}>
+                        <div class={classes!("layer", selected_class)} onclick={select_layer(layer.id)}>
                             <h3>{layer.clone().name}</h3>
                             <label>
                                 {"Visible"}
                                 <input
                                     type="checkbox"
                                     checked={layer.visible}
-                                    onchange={toggle_layer_visibility(index)}
+                                    onchange={toggle_layer_visibility(layer.id)}
                                 />
                             </label>
-                            <button onclick={remove_layer(index)}>{"Remove"}</button>
+                            <button onclick={remove_layer(layer.id)}>{"Remove"}</button>
+                            <span>{format!("(id: {})", layer.id)}</span>
                         </div>
                     }
                 }).collect::<Html>()

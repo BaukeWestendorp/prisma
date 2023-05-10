@@ -1,14 +1,16 @@
+use serde::{Deserialize, Serialize};
+
 use crate::color::Color;
 use crate::project::CycleContext;
 
-#[derive(Debug, Clone, Copy, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type")]
 pub enum WaveType {
     Sine,
     Square { pulse_width: f32 },
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type")]
 pub enum Effect {
     StaticColor {
@@ -25,13 +27,13 @@ pub enum Effect {
     },
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 pub struct LedRange {
     pub min: usize,
     pub max: usize,
 }
 
-#[derive(Debug, Clone, PartialEq, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct EffectLayer {
     pub bpm_factor: f32,
     pub range: LedRange,

@@ -1,18 +1,19 @@
 use yew::prelude::*;
+use yewdux::prelude::*;
 
-use crate::components::effect_editor::EffectEditor;
-use crate::state::project::ProjectContext;
-use crate::state::ui::UiStateContext;
+use crate::components::layer_editor::LayerEditor;
+use crate::state::editor_project::EditorProject;
+use crate::state::ui::UiState;
 
 #[function_component]
 pub fn MainContent() -> Html {
-    let project_ctx = use_context::<ProjectContext>().expect("no project context found");
-    let ui_state_ctx = use_context::<UiStateContext>().expect("no ui state context found");
+    let project = use_store_value::<EditorProject>();
+    let ui_state = use_store_value::<UiState>();
 
-    match ui_state_ctx.selected_layer {
-        Some(selected_layer) => match project_ctx.editor_project.layers.get(selected_layer) {
+    match ui_state.selected_layer {
+        Some(selected_layer) => match project.get_layer_from_id(selected_layer) {
             Some(layer) => html! {
-                <EffectEditor layer_id={layer.id} />
+                <LayerEditor layer_id={layer.id} />
             },
             None => html! {
                 <p>{"Layer not found!"}</p>

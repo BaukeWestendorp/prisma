@@ -1,9 +1,12 @@
+use serde::{Deserialize, Serialize};
+
 use common::project::Project;
+
 use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::spawn_local;
 
-use crate::editor::editor_project::EditorProject;
+use crate::state::editor_project::EditorProject;
 
 #[wasm_bindgen]
 extern "C" {
@@ -11,18 +14,21 @@ extern "C" {
     async fn invoke(cmd: &str, args: JsValue) -> JsValue;
 }
 
-#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 #[allow(non_snake_case)]
 struct UpdateLayerArgs {
     newProject: Project,
 }
 
-pub(crate) fn update_project(editor_project: EditorProject) {
-    spawn_local(async move {
-        let js_value = serde_wasm_bindgen::to_value(&UpdateLayerArgs {
-            newProject: editor_project.into(),
-        })
-        .unwrap();
-        invoke("update_project", js_value).await;
+pub(crate) fn update_project(editor_project: &EditorProject) {
+    spawn_local({
+        let editor_project = editor_project.clone();
+        async move {
+            let js_value = serde_wasm_bindgen::to_value(&UpdateLayerArgs {
+                newProject: editor_project.into(),
+            })
+            .unwrap();
+            invoke("update_project", js_value).await;
+        }
     });
 }
