@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 use common::color::Color;
 use common::effect::{Effect, EffectLayer, LedRange, WaveType};
-use common::project::Project;
+use common::project::PrismaProject;
 
 use yewdux::prelude::*;
 
@@ -143,7 +143,7 @@ impl Listener for ProjectTransferer {
     }
 }
 
-impl From<EditorProject> for Project {
+impl From<EditorProject> for PrismaProject {
     fn from(editor_project: EditorProject) -> Self {
         Self {
             framerate: editor_project.framerate,

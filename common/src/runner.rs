@@ -3,11 +3,11 @@ use std::net::TcpStream;
 use std::time::{Duration, Instant};
 
 use crate::color::Color;
-use crate::project::Project;
+use crate::project::PrismaProject;
 
 #[derive(Debug)]
 pub struct Runner {
-    pub project: Project,
+    pub project: PrismaProject,
     pub stream: TcpStream,
     pub leds: Vec<Color>,
     pub frame: usize,
@@ -15,7 +15,7 @@ pub struct Runner {
 }
 
 impl Runner {
-    pub fn new(project: Project, address: &str) -> Self {
+    pub fn new(project: PrismaProject, address: &str) -> Self {
         let stream = TcpStream::connect(address).unwrap();
 
         let leds = vec![Color::black(); project.led_count()];
@@ -40,7 +40,7 @@ impl Runner {
         ));
     }
 
-    pub fn update_project(&mut self, project: Project) {
+    pub fn update_project(&mut self, project: PrismaProject) {
         self.project = project;
     }
 

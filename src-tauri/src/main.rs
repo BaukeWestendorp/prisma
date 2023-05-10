@@ -3,7 +3,7 @@
 
 use std::sync::{Arc, Mutex};
 
-use common::project::Project;
+use common::project::PrismaProject;
 use common::runner::Runner;
 
 #[derive(Debug)]
@@ -12,7 +12,7 @@ struct RunnerState {
 }
 
 #[tauri::command]
-fn update_project(new_project: Project, project_state: tauri::State<'_, RunnerState>) {
+fn update_project(new_project: PrismaProject, project_state: tauri::State<'_, RunnerState>) {
     project_state
         .runner
         .lock()
@@ -21,7 +21,7 @@ fn update_project(new_project: Project, project_state: tauri::State<'_, RunnerSt
 }
 
 fn main() {
-    let initial_project = Project {
+    let initial_project = PrismaProject {
         framerate: 50,
         global_bpm: 60.0,
         effect_layers: vec![],

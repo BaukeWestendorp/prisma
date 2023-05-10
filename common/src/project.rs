@@ -5,13 +5,13 @@ use crate::effect::{hydrate_effect, Effect, EffectLayer, LedRange};
 use crate::runner::Runner;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct Project {
+pub struct PrismaProject {
     pub framerate: usize,
     pub global_bpm: f32,
     pub effect_layers: Vec<EffectLayer>,
 }
 
-impl Default for Project {
+impl Default for PrismaProject {
     fn default() -> Self {
         Self {
             framerate: 50,
@@ -21,7 +21,7 @@ impl Default for Project {
     }
 }
 
-impl Project {
+impl PrismaProject {
     pub fn hydrate(&mut self, runner: &mut Runner) {
         runner.clear_leds();
 

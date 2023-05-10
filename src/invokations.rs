@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-use common::project::Project;
+use common::project::PrismaProject;
 
 use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsValue;
@@ -17,7 +17,7 @@ extern "C" {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[allow(non_snake_case)]
 struct UpdateLayerArgs {
-    newProject: Project,
+    newProject: PrismaProject,
 }
 
 pub(crate) fn update_project(editor_project: &EditorProject) {
