@@ -41,13 +41,16 @@ main {
 	width: 100vw;
 }
 
+.sidebar {
+	border-right: 1px solid var(--c-gray-3);
+	padding: 0.75rem;
+}
+
 .layer-list {
 	display: flex;
 	flex-direction: column;
 	gap: 0.75rem;
 	padding: 0.75rem;
-
-	border-right: 1px solid var(--c-gray-3);
 }
 
 .layer-list .layer {

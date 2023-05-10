@@ -1,9 +1,12 @@
 use yew::prelude::*;
 use yewdux::prelude::*;
 
-use crate::components::layer_editor::LayerEditor;
 use crate::state::editor_project::EditorProject;
 use crate::state::ui::UiState;
+
+use layer_editor::LayerEditor;
+
+mod layer_editor;
 
 #[function_component]
 pub fn MainContent() -> Html {
