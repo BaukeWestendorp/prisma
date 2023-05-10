@@ -4,7 +4,7 @@ use common::effect::Effect;
 use yew::prelude::*;
 use yewdux::prelude::use_store;
 
-use crate::state::editor_project::{EditorProject, LayerId, ProjectAction};
+use crate::state::project::{LayerId, ProjectAction, ProjectState};
 
 #[derive(Debug, Clone, Properties, PartialEq)]
 pub struct Props {
@@ -13,7 +13,7 @@ pub struct Props {
 
 #[function_component]
 pub fn LayerEditor(props: &Props) -> Html {
-    let (project, dispatch_project) = use_store::<EditorProject>();
+    let (project, dispatch_project) = use_store::<ProjectState>();
 
     let update = {
         let layer_id = props.layer_id;

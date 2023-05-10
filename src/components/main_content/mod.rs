@@ -1,7 +1,7 @@
 use yew::prelude::*;
 use yewdux::prelude::*;
 
-use crate::state::editor_project::EditorProject;
+use crate::state::project::ProjectState;
 use crate::state::ui::UiState;
 
 use layer_editor::LayerEditor;
@@ -10,7 +10,7 @@ mod layer_editor;
 
 #[function_component]
 pub fn MainContent() -> Html {
-    let project = use_store_value::<EditorProject>();
+    let project = use_store_value::<ProjectState>();
     let ui_state = use_store_value::<UiState>();
 
     match ui_state.selected_layer {

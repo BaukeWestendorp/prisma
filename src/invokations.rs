@@ -6,7 +6,7 @@ use wasm_bindgen::prelude::wasm_bindgen;
 use wasm_bindgen::JsValue;
 use wasm_bindgen_futures::spawn_local;
 
-use crate::state::editor_project::EditorProject;
+use crate::state::project::ProjectState;
 
 #[wasm_bindgen]
 extern "C" {
@@ -20,7 +20,7 @@ struct UpdateLayerArgs {
     newProject: PrismaProject,
 }
 
-pub(crate) fn update_project(editor_project: &EditorProject) {
+pub(crate) fn update_project(editor_project: &ProjectState) {
     spawn_local({
         let editor_project = editor_project.clone();
         async move {

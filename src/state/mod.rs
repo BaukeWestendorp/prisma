@@ -1,2 +1,2 @@
-pub mod editor_project;
+pub mod project;
 pub mod ui;

@@ -1,12 +1,12 @@
 use yew::prelude::*;
 use yewdux::prelude::use_store;
 
-use crate::state::editor_project::{EditorProject, ProjectAction};
+use crate::state::project::{ProjectAction, ProjectState};
 use crate::state::ui::{UiAction, UiState};
 
 #[function_component]
 pub fn LayerList() -> Html {
-    let (project, dispatch_project) = use_store::<EditorProject>();
+    let (project, dispatch_project) = use_store::<ProjectState>();
     let (ui_state, dispatch_ui_state) = use_store::<UiState>();
 
     let add_layer = dispatch_project.apply_callback(move |_| ProjectAction::AddDefaultLayer());

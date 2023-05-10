@@ -2,7 +2,7 @@ use std::rc::Rc;
 
 use yewdux::prelude::*;
 
-use super::editor_project::LayerId;
+use super::project::LayerId;
 
 #[derive(Clone, Debug, Default, PartialEq, Store)]
 pub struct UiState {

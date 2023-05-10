@@ -14,13 +14,13 @@ use crate::invokations;
 static ID_COUNTER: AtomicUsize = AtomicUsize::new(0);
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
-pub struct EditorProject {
+pub struct ProjectState {
     pub framerate: usize,
     pub global_bpm: f32,
     pub layers: Vec<Layer>, // TODO: Convert this to a hashmap for better performance.
 }
 
-impl EditorProject {
+impl ProjectState {
     pub fn total_layers(&self) -> usize {
         self.layers.len()
     }
@@ -34,7 +34,7 @@ impl EditorProject {
     }
 }
 
-impl Default for EditorProject {
+impl Default for ProjectState {
     fn default() -> Self {
         Self {
             framerate: 50,
@@ -44,7 +44,7 @@ impl Default for EditorProject {
     }
 }
 
-impl Store for EditorProject {
+impl Store for ProjectState {
     fn new() -> Self {
         init_listener(ProjectTransferer);
         Self::default()
@@ -65,8 +65,8 @@ pub enum ProjectAction {
     ToggleLayerVisibility(LayerId),
 }
 
-impl Reducer<EditorProject> for ProjectAction {
-    fn apply(self, mut editor_project: Rc<EditorProject>) -> Rc<EditorProject> {
+impl Reducer<ProjectState> for ProjectAction {
+    fn apply(self, mut editor_project: Rc<ProjectState>) -> Rc<ProjectState> {
         let state = Rc::make_mut(&mut editor_project);
 
         match self {
@@ -137,14 +137,14 @@ impl Layer {
 
 struct ProjectTransferer;
 impl Listener for ProjectTransferer {
-    type Store = EditorProject;
+    type Store = ProjectState;
     fn on_change(&mut self, state: Rc<Self::Store>) {
         invokations::update_project(state.as_ref());
     }
 }
 
-impl From<EditorProject> for PrismaProject {
-    fn from(editor_project: EditorProject) -> Self {
+impl From<ProjectState> for PrismaProject {
+    fn from(editor_project: ProjectState) -> Self {
         Self {
             framerate: editor_project.framerate,
             global_bpm: editor_project.global_bpm,
